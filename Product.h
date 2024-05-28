@@ -11,6 +11,9 @@ protected:
     std::string name;
     double price;
     int quantity;
+    static int idCounter;
+
+    std::string generateProductID();
 
 public:
     Product();
