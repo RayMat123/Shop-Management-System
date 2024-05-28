@@ -45,7 +45,10 @@ private:
 
 public:
     Electronics();
-    Electronics(const std::string& prodBrand, const std::vector<int>& periodValues, const std::string& prodModelNo, const double power);
+    Electronics(
+        const std::string& _name, double _price, int _quantity, 
+        const std::string& prodBrand, const std::vector<int>& periodValues, const std::string& prodModelNo, const double power
+        );
     Electronics(const Electronics& other);
     ~Electronics();
     
@@ -76,7 +79,10 @@ private:
 
 public:
     Clothing();
-    Clothing(double _size, const std::string& _material, const std::string& _color, const char _gender);
+    Clothing(
+        const std::string& _name, double _price, int _quantity, double _size, const std::string& _material, const std::string& _color, 
+        const char _gender
+        );
     Clothing(const Clothing& other);
     ~Clothing();
 
@@ -106,7 +112,11 @@ private:
 
 public:
     Book();
-    Book(const std::string& _author, const std::string& _isbn, const std::string _publisher, int year, const std::string& genre);
+    Book(
+        const std::string& _name, double _price, int _quantity, 
+        const std::string& _author, const std::string& _isbn, 
+        const std::string _publisher, int year, const std::string& genre
+        );
     Book(const Book& other);
     ~Book();
 
