@@ -79,7 +79,8 @@ public:
     PremiumCustomer(
         const std::string& _name, const std::string& _email, 
         const std::string& phoneNumber, const std::string& _address, 
-        const std::vector<std::string> products, const double amount, const int fee
+        const std::vector<std::string> products, const double amount, 
+        const int fee
         );
     PremiumCustomer(const PremiumCustomer& other);
     ~PremiumCustomer();
