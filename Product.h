@@ -6,7 +6,7 @@ class Product {
 private:
     char* productID;
 
-    const char* generateProductID();
+    
 
 
 protected:
