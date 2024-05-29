@@ -1,30 +1,30 @@
 #pragma once
-#include<string> 
-#include<vector>
+#include "utils.h"
 
 class Product {
 
 private:
-    std::string productID;
+    char* productID;
+
+    const char* generateProductID();
+
 
 protected:
-    std::string name;
+    char* name;
     double price;
     int quantity;
     static int idCounter;
 
-    std::string generateProductID();
-
 public:
     Product();
-    Product(const std::string& id, const std::string& _name, double _price, int _quantity);
+    Product(const char* id, const char* _name, double _price, int _quantity);
     Product(const Product& other);
     ~Product();
 
-    const std::string getProductID() { return productID; }
+    const char* getProductID() { return productID; }
 
-    void setName(const std::string n) { name = n; }
-    const std::string getName() { return name; }
+    void setName(const char* n) { copy_str(name, n); }
+    const char* getName() { return name; }
 
     void setPrice(double p) { price = p; }
     const double getPrice() { return price; }
@@ -38,33 +38,34 @@ public:
 class Electronics : public Product {
 
 private:
-    std::string brand;
-    std::vector<int> warrantyPeriod;
-    std::string modelNumber;
+    char* brand;
+    int* warrantyPeriod;
+    char* modelNumber;
     double powerConsumption;
 
 public:
     Electronics();
     Electronics(
-        const std::string& _name, double _price, int _quantity, 
-        const std::string& prodBrand, const std::vector<int>& periodValues, const std::string& prodModelNo, const double power
+        const char* _name, double _price, int _quantity, 
+        const char* prodBrand, const int* periodValues, 
+        const char* prodModelNo, const double power
         );
     Electronics(const Electronics& other);
     ~Electronics();
     
-    void setBrand(const std::string& prodBrand) { brand = prodBrand; }
-    const std::string getBrand() { return brand; }
+    void setBrand(const char* prodBrand) { copy_str(brand, prodBrand); }
+    const char* getBrand() { return brand; }
 
-    void setBrand(const std::vector<int>& period) { warrantyPeriod.assign(period.begin(), period.end()); }
-    const std::vector<int> getWarrantyPeriod() { return warrantyPeriod; }
+    void setBrand(const int* period);
+    const int* getWarrantyPeriod();
 
-    void setModelNumber(const std::string& modelNo) { modelNumber = modelNo; }
-    const std::string getModelNumber() { return modelNumber; }
+    void setModelNumber(const char* modelNo) { copy_str(modelNumber, modelNo); }
+    const char* getModelNumber() { return modelNumber; }
 
     void setPowerConsumption(const double power) { powerConsumption = power; }
     const double getPowerConsumption() { return powerConsumption; }
 
-    const std::vector<int> calculateWarrantyCoverage();
+    void calculateWarrantyCoverage();
 
     void displayElectronics();
 };
@@ -73,14 +74,15 @@ class Clothing : public Product {
 
 private:
     double size;
-    std::string material;
-    std::string color;
+    char* material;
+    char* color;
     char gender;
 
 public:
     Clothing();
     Clothing(
-        const std::string& _name, double _price, int _quantity, double _size, const std::string& _material, const std::string& _color, 
+        const char* _name, double _price, int _quantity, double _size, 
+        const char* _material, const char* _color, 
         const char _gender
         );
     Clothing(const Clothing& other);
@@ -89,11 +91,11 @@ public:
     void setSize(const double s) { size = s; }
     const double getSize() { return size; }
 
-    void setMaterial(const std::string& m) { material = m; }
-    const std::string getMaterial() { return material; }
+    void setMaterial(const char* m) { copy_str(material, m); }
+    const char* getMaterial() { return material; }
 
-    void setColor(const std::string _color) { color = _color; }
-    const std::string getColor() { return color; }
+    void setColor(const char* _color) { copy_str(color, _color); }
+    const char* getColor() { return color; }
 
     void setGender(const char g) { gender = g; }
     const char getGender() { return gender; }
@@ -104,36 +106,36 @@ public:
 class Book : public Product {
 
 private:
-    std::string author;
-    std::string isbn;
-    std::string publisher;
+    char* author;
+    char* isbn;
+    char* publisher;
     int pubYear;
-    std::string genre;
+    char* genre;
 
 public:
     Book();
     Book(
-        const std::string& _name, double _price, int _quantity, 
-        const std::string& _author, const std::string& _isbn, 
-        const std::string _publisher, int year, const std::string& genre
+        const char* _name, double _price, int _quantity, 
+        const char* _author, const char* _isbn, 
+        const char* _publisher, int year, const char* genre
         );
     Book(const Book& other);
     ~Book();
 
-    void setAuthor(const std::string& a) { author = a; }
-    const std::string getAuthor() { return author; }
+    void setAuthor(const char* a) { copy_str(author, a); }
+    const char* getAuthor() { return author; }
 
-    void setIsbn(const std::string& _isbn) { isbn = _isbn; }
-    const std::string getIsbn() { return isbn; }
+    void setIsbn(const char* _isbn) { copy_str(isbn, _isbn); }
+    const char* getIsbn() { return isbn; }
 
-    void setPublisher(const std::string& pub) { publisher = pub; }
-    const std::string getPublisher() { return publisher; }
+    void setPublisher(const char* pub) { copy_str(publisher, pub); }
+    const char* getPublisher() { return publisher; }
 
     void setPubYear(const int year) { pubYear = year; }
     const int getPubYear() { return pubYear; }
 
-    void setGenre(const std::string& _genre) { genre = _genre; }
-    const std::string getGenre() { return genre; }
+    void setGenre(const char* _genre) { copy_str(genre, _genre); }
+    const char* getGenre() { return genre; }
 
     void displayBook();
 };
