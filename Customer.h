@@ -1,42 +1,49 @@
 #pragma once 
-#include<string>
-#include<vector>
+#include "utils.h"
 
 class Customer {
 
 private:
-    std::string customerID;
+    char* customerID;
 
-    std::string generateCustomerID();
+    char* generateCustomerID();
 
 protected:
-    std::string name;
-    std::string email;
-    std::string phoneNumber;
-    std::string address;
+    char** productsPurchased;
+    double amountSpend;
+    char* name;
+    char* email;
+    char* phoneNumber;
+    char* address;
 
 public:
     Customer();
     Customer(
-        const std::string& _name, const std::string& _email, 
-        const std::string& _phoneNumber, const std::string& _address
+        const char* _name, const char* _email, 
+        const char* _phoneNumber, const char* _address
         );
     Customer(const Customer& other);
     ~Customer();
 
-    const std::string& getCustomerID() const { return customerID; }
+    const char* getCustomerID() const { return customerID; }
 
-    void setName(const std::string& name) { this->name = name; }
-    const std::string& getName() { return name; }
+    void setName(const char* _name) { copy_str(name, _name); }
+    const char* getName() { return name; }
 
-    void setEmail(const std::string& email) { this->email = email; }
-    const std::string& getEmail() const { return email; }
+    void setEmail(const char* _email) { copy_str(email, _email); }
+    const char* getEmail() const { return email; }
 
-    void setPhoneNumber(const std::string& phoneNumber) { this->phoneNumber = phoneNumber; }
-    const std::string& getPhoneNumber() const { return phoneNumber; }
+    void setPhoneNumber(const char* _phoneNumber) { copy_str(phoneNumber, _phoneNumber); }
+    const char* getPhoneNumber() const { return phoneNumber; }
 
-    void setAddress(const std::string& address) { this->address = address; }
-    const std::string& getAddress() const { return address; }
+    void setAddress(const char* _address) { copy_str(address, _address); }
+    const char* getAddress() const { return address; }
+
+    void setProductsPurchased(const char** products);
+    const char** getProductsPurchased() { return productsPurchased; }
+
+    void setAmountSpend(const double amount) { amountSpend = amount; }
+    const double getAmountSpend() { return amountSpend; }
 
     void displayCustomer();
 };
@@ -44,24 +51,18 @@ public:
 class RegularCustomer : public Customer {
 
 private:
-    std::vector<std::string> productsPurchased;
+    char** productsPurchased;
     double amountSpend;
 
 public:
     RegularCustomer();
     RegularCustomer(
-        const std::string& _name, const std::string& _email, 
-        const std::string& phoneNumber, const std::string& _address, 
-        const std::vector<std::string> products, double amount
+        const char* _name, const char* _email, 
+        const char* phoneNumber, const char* _address, 
+        const char** products, double amount
         );
     RegularCustomer(const RegularCustomer& other);
     ~RegularCustomer();
-
-    void setProductsPurchased(const std::vector<std::string> products) { productsPurchased.assign( products.begin(), products.end() ); }
-    const std::vector<std::string>& getProductsPurchased() const { return productsPurchased; }
-
-    void setAmountSpend(const double amount) { amountSpend = amount; }
-    const double getAmountSpend() { return amountSpend; }
 
     void displayRegularCustomer();
 };
@@ -69,27 +70,19 @@ public:
 class PremiumCustomer : public Customer {
 
 private:
-    std::vector<std::string> productsPurchased;
-    double amountSpend;
     int loyaltyPoints;
     double subscriptionFee;
 
 public:
     PremiumCustomer();
     PremiumCustomer(
-        const std::string& _name, const std::string& _email, 
-        const std::string& phoneNumber, const std::string& _address, 
-        const std::vector<std::string> products, const double amount, 
+        const char* _name, const char* _email, 
+        const char* phoneNumber, const char* _address, 
+        const char** products, const double amount, 
         const int fee
         );
     PremiumCustomer(const PremiumCustomer& other);
     ~PremiumCustomer();
-
-    void setProductsPurchased(const std::vector<std::string> products) { productsPurchased.assign( products.begin(), products.end() ); }
-    const std::vector<std::string>& getProductsPurchased() const { return productsPurchased; }
-
-    void setAmountSpend(const double amount) { amountSpend = amount; }
-    const double getAmountSpend() { return amountSpend; }
 
     void setLoyaltyPoints(const int loyaltyPoints) { this->loyaltyPoints = loyaltyPoints; }
     const int getLoyaltyPoints() { return loyaltyPoints; }
