@@ -1,10 +1,15 @@
 #pragma once
 #include "utils.h"
 
+class Electronics;
+class Clothing;
+class Book;
+
 class Product {
 
 private:
     char* productID;
+    static int idCounter;
 
     const char* generateProductID();
 
@@ -13,11 +18,11 @@ protected:
     char* name;
     double price;
     int quantity;
-    static int idCounter;
+    
 
 public:
     Product();
-    Product(const char* id, const char* _name, double _price, int _quantity);
+    Product(const char* _name, double _price, int _quantity);
     Product(const Product& other);
     ~Product();
 
@@ -47,7 +52,7 @@ public:
     Electronics();
     Electronics(
         const char* _name, double _price, int _quantity, 
-        const char* prodBrand, const int* periodValues, 
+        const char* prodBrand, int years, int months, int days,  
         const char* prodModelNo, const double power
         );
     Electronics(const Electronics& other);
@@ -56,8 +61,8 @@ public:
     void setBrand(const char* prodBrand) { copy_str(brand, prodBrand); }
     const char* getBrand() { return brand; }
 
-    void setBrand(const int* period);
-    const int* getWarrantyPeriod();
+    void setWarrantyPeriod(int years, int months, int days);
+    void getWarrantyPeriod();
 
     void setModelNumber(const char* modelNo) { copy_str(modelNumber, modelNo); }
     const char* getModelNumber() { return modelNumber; }
@@ -117,7 +122,7 @@ public:
     Book(
         const char* _name, double _price, int _quantity, 
         const char* _author, const char* _isbn, 
-        const char* _publisher, int year, const char* genre
+        const char* _publisher, int year, const char* _genre
         );
     Book(const Book& other);
     ~Book();
