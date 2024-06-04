@@ -1,16 +1,17 @@
 #pragma once 
 #include "utils.h"
+class RegularCustomer;
+class PremiumCustomer;
 
 class Customer {
 
 private:
     char* customerID;
+    static int idCounter;
 
-    char* generateCustomerID();
+    void generateCustomerID();
 
 protected:
-    char** productsPurchased;
-    double amountSpend;
     char* name;
     char* email;
     char* phoneNumber;
@@ -39,27 +40,17 @@ public:
     void setAddress(const char* _address) { copy_str(address, _address); }
     const char* getAddress() const { return address; }
 
-    void setProductsPurchased(const char** products);
-    const char** getProductsPurchased() { return productsPurchased; }
-
-    void setAmountSpend(const double amount) { amountSpend = amount; }
-    const double getAmountSpend() { return amountSpend; }
 
     void displayCustomer();
 };
 
 class RegularCustomer : public Customer {
 
-private:
-    char** productsPurchased;
-    double amountSpend;
-
 public:
     RegularCustomer();
     RegularCustomer(
         const char* _name, const char* _email, 
-        const char* phoneNumber, const char* _address, 
-        const char** products, double amount
+        const char* _phoneNumber, const char* _address
         );
     RegularCustomer(const RegularCustomer& other);
     ~RegularCustomer();
@@ -77,8 +68,7 @@ public:
     PremiumCustomer();
     PremiumCustomer(
         const char* _name, const char* _email, 
-        const char* phoneNumber, const char* _address, 
-        const char** products, const double amount, 
+        const char* _phoneNumber, const char* _address, int points, 
         const int fee
         );
     PremiumCustomer(const PremiumCustomer& other);
@@ -89,6 +79,8 @@ public:
 
     void setSubscriptionFee(const double subscriptionFee) { this->subscriptionFee = subscriptionFee; }
     const int getSubscriptionFee() { return subscriptionFee; }
+
+    double calculateDiscount() const { return loyaltyPoints * 0.1; }
 
     void displayPremiumCustomer();
 };

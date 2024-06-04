@@ -1,3 +1,4 @@
+
 #include "utils.h"
 
 int get_str_len(const char* source){
@@ -19,7 +20,7 @@ char* size_alloc(const char* source, char* dest){
     return dest;
 }
 
-void copy_str(char *&dest, char *source){
+void copy_str(char *&dest, const char *source){
     dest = size_alloc(source, dest);
 
     char* destPtr = dest;

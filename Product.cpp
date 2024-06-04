@@ -1,43 +1,70 @@
 #include "Product.h"
-#include<iostream>
-
+#include <iostream>
 
 int Product::idCounter = 0;
 
-const char* Product::generateProductID() {
-    if(idCounter < 10){
-        return "PROD-0";
-    } else
-        return "PROD-";
+void Product::generateProductID()
+{
+    int currentID = idCounter;
+    int numDigits = (currentID < 10) ? 2 : 2;
+    int totalLength = 5 + numDigits;
+
+    productID = new char[totalLength + 1];
+
+    productID[0] = 'P';
+    productID[1] = 'R';
+    productID[2] = 'O';
+    productID[3] = 'D';
+    productID[4] = '-';
+
+    if (currentID < 10)
+    {
+        productID[5] = '0';
+        productID[6] = '0' + currentID;
+    }
+    else
+    {
+        productID[5] = (currentID / 10);
+        productID[6] = '0' + (currentID % 10);
+    }
+
+    productID[7] = '\0';
 }
 
-Product::Product(){
+Product::Product() : productID(nullptr), name(nullptr)
+{
     idCounter++;
 
-    const char* defStr { "Unknown" };
+    const char *defStr{"Unknown"};
 
-    copy_str(productID, generateProductID());
+    generateProductID();
     copy_str(name, defStr);
     price = 0.00;
     quantity = 0;
 }
 
-Product::Product(const char* _name, double _price, int _quantity){
+Product::Product(const char *_name, double _price, int _quantity)
+    : productID(nullptr), name(nullptr)
+{
     idCounter++;
 
-    copy_str(productID, generateProductID());
+    generateProductID();
     copy_str(name, _name);
     price = _price;
     quantity = _quantity;
 }
 
-Product::Product(const Product& other){
+Product::Product(const Product &other) : name(nullptr)
+{
     copy_str(name, other.name);
     price = other.price;
-    quantity = other.quantity;   
+    quantity = other.quantity;
 }
 
-Product::~Product(){
+Product::~Product()
+{
+    idCounter--;
+
     delete[] productID;
     delete[] name;
 
@@ -45,93 +72,84 @@ Product::~Product(){
     name = nullptr;
 }
 
-void Product::displayProduct(){
+void Product::displayProduct()
+{
+    std::cout<< "Total Products: " << idCounter << std::endl;
     std::cout << "\nProduct Information:" << std::endl;
-    std::cout << "Product ID: " << getProductID() << std::endl;
+    std::cout << "Product ID: " << getProductID() << getCount() << std::endl;
     std::cout << "Name: " << getName() << std::endl;
     std::cout << "Price: $" << getPrice() << std::endl;
     std::cout << "Available Quantity: " << getQuantity() << std::endl;
 }
 
-Electronics::Electronics(){
-    const char* defStr { "Unknown" };
+Electronics::Electronics() : brand(nullptr), modelNumber(nullptr)
+{
+    const char *defStr{"Unknown"};
     copy_str(brand, defStr);
-    warrantyPeriod = new int;
-    warrantyPeriod = 0;
+    warrantyYear = 0;
+    warrantyMonth = 0;
+    warrantyDay = 0;
     copy_str(modelNumber, defStr);
     powerConsumption = 0.00;
 }
 
-Electronics::Electronics(const char* _name, double _price, int _quantity, 
-        const char* prodBrand, int years, int months, int days, 
-        const char* prodModelNo, const double power)
+Electronics::Electronics(
+    const char *_name, double _price, int _quantity,
+    const char *prodBrand, int years, int months, int days,
+    const char *prodModelNo, const double power)
+    : Product(_name, _price, _quantity)
 {
-    Product(_name, _price, _quantity);
 
     copy_str(brand, prodBrand);
 
-    if(this->warrantyPeriod != nullptr){
-        delete this->warrantyPeriod;
-        this->warrantyPeriod = nullptr;
-    }
-    
-    warrantyPeriod = new int[3];
-    warrantyPeriod[0] = years;
-    warrantyPeriod[1] = months;
-    warrantyPeriod[2] = days;
+    warrantyYear = years;
+    warrantyMonth = months;
+    warrantyDay = days;
 
     copy_str(modelNumber, prodModelNo);
 
     powerConsumption = power;
 }
 
-Electronics::Electronics(const Electronics& other){
-    Product(other.name, other.price, other.quantity);
+Electronics::Electronics(const Electronics &other)
+    : Product(other.name, other.price, other.quantity) {
 
     copy_str(brand, other.brand);
-    
-    if(this->warrantyPeriod != nullptr){
-        delete[] this->warrantyPeriod;
-        this->warrantyPeriod = nullptr;
-    }
 
-    for(int i=0; i<3; i++){
-        this->warrantyPeriod[i] = other.warrantyPeriod[i];
-    }
+    warrantyYear = other.warrantyYear;
+    warrantyMonth = other.warrantyMonth;
+    warrantyDay = other.warrantyDay;
 
     copy_str(modelNumber, other.modelNumber);
 
     powerConsumption = other.powerConsumption;
 }
 
-Electronics::~Electronics(){
+Electronics::~Electronics()
+{
     delete[] brand;
-    delete[] warrantyPeriod;
     delete[] modelNumber;
 
     brand = nullptr;
-    warrantyPeriod = nullptr;
     modelNumber = nullptr;
 }
 
-void Electronics::setWarrantyPeriod(int years, int months, int days){
-    if(this->warrantyPeriod != nullptr){
-        delete[] this->warrantyPeriod;
-        this-> warrantyPeriod = nullptr;
-    }
-
-    warrantyPeriod[0] = years;
-    warrantyPeriod[1] = months;
-    warrantyPeriod[2] = days;
+void Electronics::setWarrantyPeriod(int years, int months, int days)
+{
+    warrantyYear = years;
+    warrantyMonth = months;
+    warrantyDay = days;
 }
 
-void Electronics::getWarrantyPeriod() {
-    std::cout << warrantyPeriod[0] << " Year(s), " << warrantyPeriod[1] << " Month(s), " << warrantyPeriod[2] << " Day(s).";
+void Electronics::getWarrantyPeriod()
+{
+    std::cout << warrantyYear << " Year(s), " << warrantyMonth << " Month(s), " << warrantyDay << " Day(s).";
 }
 
-void Electronics::calculateWarrantyCoverage(){
-    int cYear=0, cMonth=0, cDay=0;
-    int pYear=0, pMonth=0, pDay=0;
+void Electronics::calculateWarrantyCoverage()
+{
+    int cYear = 0, cMonth = 0, cDay = 0;
+    int pYear = 0, pMonth = 0, pDay = 0;
 
     std::cout << "Enter current date(YY-MM-DD): ";
     std::cin >> cYear >> cMonth >> cDay;
@@ -143,13 +161,15 @@ void Electronics::calculateWarrantyCoverage(){
     pMonth = pMonth - cMonth;
     pDay = pDay - cDay;
 
-    if(pYear<=0 && pMonth<=0 && pDay<=0)
-        std::cout << "\nThe product" << this->name << "has expired." << std::endl;    
+    if (pYear <= 0 && pMonth <= 0 && pDay <= 0)
+        std::cout << "\nThe product" << this->name << "has expired." << std::endl;
+    else
+        std::cout << "\nThe product" << this->name << "has " << warrantyYear << " Year(s), " << warrantyMonth << " Month(s), " << warrantyDay << " Day(s) remaining warranty period." << std::endl;
 }
 
-
-void Electronics::displayElectronics(){
-    displayProduct();
+void Electronics::displayElectronics()
+{
+    Product::displayProduct();
     std::cout << "\nProduct type: Electronics" << std::endl;
     std::cout << "Brand: " << getBrand() << std::endl;
     std::cout << "Warranty Period: ";
@@ -179,8 +199,8 @@ Clothing::Clothing(
     gender = _gender;
 }
 
-Clothing::Clothing(const Clothing& other){
-    Product(other.name, other.price, other.quantity);
+Clothing::Clothing(const Clothing& other)
+: Product(other.name, other.price, other.quantity) {
 
     size = other.size;
     copy_str(material, other.material);
@@ -191,7 +211,7 @@ Clothing::Clothing(const Clothing& other){
 Clothing::~Clothing(){
     delete[] material;
     delete[] color;
-    
+
     material = nullptr;
     color = nullptr;
 }
@@ -223,13 +243,13 @@ Book::Book() {
 }
 
 Book::Book(
-    const char* _name, double _price, int _quantity, 
-    const char* _author, const char* _isbn, 
+    const char* _name, double _price, int _quantity,
+    const char* _author, const char* _isbn,
     const char* _publisher, int year, const char* _genre
     )
 {
     Product(_name, _price, _quantity);
-    
+
     copy_str(author, _author);
     copy_str(isbn, _isbn);
     copy_str(publisher, _publisher);
@@ -237,8 +257,8 @@ Book::Book(
     copy_str(genre, _genre);
 }
 
-Book::Book(const Book& other){
-    Product(other.name, other.price, other.quantity);
+Book::Book(const Book& other)
+: Product(other.name, other.price, other.quantity) {
 
     copy_str(author, other.author);
     copy_str(isbn, other.isbn);

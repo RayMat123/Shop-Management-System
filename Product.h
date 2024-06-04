@@ -11,7 +11,7 @@ private:
     char* productID;
     static int idCounter;
 
-    const char* generateProductID();
+    void generateProductID();
 
 
 protected:
@@ -25,6 +25,8 @@ public:
     Product(const char* _name, double _price, int _quantity);
     Product(const Product& other);
     ~Product();
+
+    int getCount() { return idCounter; }
 
     const char* getProductID() { return productID; }
 
@@ -44,14 +46,16 @@ class Electronics : public Product {
 
 private:
     char* brand;
-    int* warrantyPeriod;
+    int warrantyYear;
+    int warrantyMonth;
+    int warrantyDay;
     char* modelNumber;
     double powerConsumption;
 
 public:
     Electronics();
     Electronics(
-        const char* _name, double _price, int _quantity, 
+        const char* _name, double _price, int quantity, 
         const char* prodBrand, int years, int months, int days,  
         const char* prodModelNo, const double power
         );
